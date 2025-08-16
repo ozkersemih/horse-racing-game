@@ -33,16 +33,19 @@ import Results from './features/results/Results.vue'
   height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  border: 1px solid black;
+  gap: 8px;
+  padding: 8px;
+  background-color: #f8f9fa;
+  font-family: Arial, sans-serif;
 }
 
 .header {
+  background-color: #e88a8a;
   padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid black;
+  border-radius: 8px;
 }
 
 .header h1 {
