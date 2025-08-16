@@ -37,6 +37,7 @@ import Results from './features/results/Results.vue'
   padding: 8px;
   background-color: #f8f9fa;
   font-family: Arial, sans-serif;
+  box-sizing: border-box;
 }
 
 .header {
@@ -59,11 +60,13 @@ import Results from './features/results/Results.vue'
   grid-template-columns: 1fr 1.75fr 1.25fr;
   gap: 2px;
   background-color: #ccc;
+  overflow-y: hidden;
 }
 
 .horse-list-section {
   background-color: #fff;
   border: 1px solid black;
+  overflow-y: auto;
 }
 
 .track-section {
