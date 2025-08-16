@@ -77,5 +77,6 @@ import Results from './features/results/Results.vue'
 .results-section {
   background-color: #fff;
   border: 1px solid black;
+  overflow-y: auto;
 }
 </style>
