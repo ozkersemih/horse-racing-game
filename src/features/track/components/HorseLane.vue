@@ -21,7 +21,11 @@ const horseProgress = computed(() => {
   <div class="horse-lane">
     <div class="lane-number">{{ laneNumber }}</div>
     <div class="lane-track">
-      <div v-if="horse" class="horse" :style="{ left: `${horseProgress}%` }">
+      <div
+        v-if="horse"
+        class="horse"
+        :style="{ left: `${horseProgress}%`, transform: `translateX(-${horseProgress}%)` }"
+      >
         <span class="horse-icon">🐎</span>
         <span class="horse-name">{{ horse.name }}</span>
       </div>
