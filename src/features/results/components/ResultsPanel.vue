@@ -43,12 +43,12 @@ defineProps<{
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: var(--color-white);
 }
 
 .panel-header {
-  background-color: #2196f3;
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--color-white);
   padding: 8px;
   text-align: center;
   font-weight: bold;
@@ -64,7 +64,7 @@ defineProps<{
 .empty-state {
   padding: 20px;
   text-align: center;
-  color: #666;
+  color: var(--color-gray);
   font-style: italic;
   font-size: 12px;
 }

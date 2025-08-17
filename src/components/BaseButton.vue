@@ -24,8 +24,8 @@ function handleClick() {
 </template>
 <style scoped>
 .base-button {
-  background-color: var(--btn-bg, #1e90ff);
-  color: var(--btn-text, #fff);
+  background-color: var(--btn-bg, var(--color-primary));
+  color: var(--btn-text, var(--color-white));
   border: none;
   padding: var(--btn-padding, 10px 20px);
   border-radius: var(--btn-radius, 8px);
@@ -44,20 +44,20 @@ function handleClick() {
 }
 
 .primary {
-  --btn-bg: #1e90ff;
+  --btn-bg: var(--color-primary);
   --btn-bg-hover: #187bcd;
-  --btn-text: white;
+  --btn-text: var(--color-white);
 }
 
 .secondary {
-  --btn-bg: #ccc;
-  --btn-bg-hover: #bbb;
-  --btn-text: black;
+  --btn-bg: var(--color-gray);
+  --btn-bg-hover: #555;
+  --btn-text: var(--color-white);
 }
 
 .danger {
-  --btn-bg: #ff4d4f;
+  --btn-bg: var(--color-danger);
   --btn-bg-hover: #d9363e;
-  --btn-text: white;
+  --btn-text: var(--color-white);
 }
 </style>

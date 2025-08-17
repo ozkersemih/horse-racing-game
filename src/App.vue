@@ -35,7 +35,7 @@ import Results from './features/results/Results.vue'
   flex-direction: column;
   gap: 8px;
   padding: 8px;
-  background-color: #f8f9fa;
+  background-color: var(--color-light);
   font-family: Arial, sans-serif;
   box-sizing: border-box;
 }
@@ -64,19 +64,19 @@ import Results from './features/results/Results.vue'
 }
 
 .horse-list-section {
-  background-color: #fff;
-  border: 1px solid black;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-black);
   overflow-y: auto;
 }
 
 .track-section {
   background-color: #f5f5f5;
-  border: 1px solid black;
+  border: 1px solid var(--color-black);
 }
 
 .results-section {
-  background-color: #fff;
-  border: 1px solid black;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-black);
   overflow-y: auto;
 }
 </style>

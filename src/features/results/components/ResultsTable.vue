@@ -33,11 +33,11 @@ defineProps<{
 }
 
 .table-title {
-  background-color: #f8f9fa;
+  background-color: var(--color-light);
   padding: 6px 8px;
   font-weight: bold;
   font-size: 11px;
-  color: #333;
+  color: var(--color-dark);
   border-bottom: 1px solid #ddd;
 }
 
@@ -55,12 +55,12 @@ defineProps<{
   width: 20px;
   font-weight: bold;
   font-size: 10px;
-  color: #666;
+  color: var(--color-gray);
 }
 
 .name {
   flex: 1;
   font-size: 10px;
-  color: #333;
+  color: var(--color-dark);
 }
 </style>
