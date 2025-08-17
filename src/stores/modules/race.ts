@@ -76,7 +76,7 @@ const raceModule = {
       state: RaceState,
       { horseId, progress }: { horseId: string; progress: number },
     ) {
-      state.progressMap[horseId] = Math.min(100, Math.max(0, progress))
+      state.progressMap[horseId] = Math.max(0, progress)
     },
     RESET_ROUND_PROGRESS(state: RaceState) {
       state.progressMap = {}
@@ -137,7 +137,15 @@ const raceModule = {
       if (!state.isGenerated || state.currentRoundIndex === 0) return null
       return state.rounds[state.currentRoundIndex - 1]
     },
-    getProgressForHorse: (state: RaceState) => (horseId: string) => {
+    getProgressForHorse: (state: RaceState, getters: any) => (horseId: string) => {
+      const meters = state.progressMap[horseId] || 0
+      const currentRound = getters.currentRound
+      if (!currentRound) return 0
+      const distanceMeters = parseInt(currentRound.distance, 10) || 0
+      if (!distanceMeters) return 0
+      return Math.min(100, (meters / distanceMeters) * 100)
+    },
+    getProgressMetersForHorse: (state: RaceState) => (horseId: string) => {
       return state.progressMap[horseId] || 0
     },
     getHorseFinishTime: (state: RaceState) => (horseId: string) => {

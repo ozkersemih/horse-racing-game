@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
-import { useRaceTimer } from './composables/useRaceTimer'
+import { useRaceEngine } from './composables/useRaceEngine'
 import BaseButton from '@/components/BaseButton.vue'
 
 const store = useStore()
-const { startRace, pauseRace, cleanup, isRaceRunning } = useRaceTimer()
+const { startRace, pauseRace, cleanup, isRaceRunning } = useRaceEngine()
 
 const isGenerated = computed(() => store.getters['race/isGenerated'])
 const raceStatus = computed(() => store.getters['race/raceStatus'])

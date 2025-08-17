@@ -3,14 +3,19 @@ import { useStore } from 'vuex'
 import type { Horse } from '@/stores/modules/horses'
 import type { RoundResult } from '@/stores/modules/race'
 
-export function useRaceTimer() {
+function toMeters(dist: string | number): number {
+  if (typeof dist === 'number') return dist
+  return parseInt(dist, 10) || 0
+}
+
+export function useRaceEngine() {
   const store = useStore()
   const raceInterval = ref<number | null>(null)
   const RACE_TIME_INTERVAL = 100
   const ROUND_WAIT_TIME = 2000
-  const BASE_SPEED = 0.5
-  const SPEED_MULTIPLIER = 0.01
-  const SPEED_RANDOM_FACTOR = 0.3
+  const BASE_SPEED = 5
+  const SPEED_MULTIPLIER = 0.1
+  const SPEED_RANDOM_FACTOR = 2
 
   const isRaceRunning = computed(() => store.getters['race/isRaceRunning'])
   const currentRound = computed(() => store.getters['race/currentRound'])
@@ -24,23 +29,25 @@ export function useRaceTimer() {
   }
 
   function updateProgressForHorse(horse: Horse): boolean {
-    const currentProgress = store.getters['race/getProgressForHorse'](horse.id.toString())
+    const currentMeters = store.getters['race/getProgressMetersForHorse'](horse.id.toString())
     const isAlreadyFinished = store.getters['race/getHorseFinishTime'](horse.id.toString())
 
     if (isAlreadyFinished) {
       return true
     }
 
-    if (currentProgress < 100) {
+    const distanceMeters = toMeters(currentRound.value?.distance || 0)
+
+    if (currentMeters < distanceMeters) {
       const speed = calculateSpeedForHorse(horse)
-      const newProgress = currentProgress + speed
+      const newMeters = currentMeters + speed
 
       store.commit('race/UPDATE_HORSE_PROGRESS', {
         horseId: horse.id.toString(),
-        progress: newProgress,
+        progress: newMeters,
       })
       return false
-    } else if (currentProgress >= 100) {
+    } else if (currentMeters >= distanceMeters) {
       console.log(horse.id, horse.name, 'finished')
       const finishTime = Date.now()
       store.commit('race/SET_HORSE_FINISH_TIME', {

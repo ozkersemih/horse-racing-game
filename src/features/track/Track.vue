@@ -2,7 +2,12 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import HorseLane from './components/HorseLane.vue'
+import RaceTimer from './components/RaceTimer.vue'
 import type { Horse } from '@/stores/modules/horses'
+
+defineOptions({
+  name: 'RaceTrack',
+})
 
 const store = useStore()
 
@@ -33,6 +38,11 @@ const trackLanes = computed(() => {
 
 <template>
   <div class="track">
+    <div class="track-header">
+      <div class="track-title">RACE TRACK</div>
+      <RaceTimer />
+    </div>
+
     <div class="track-lanes">
       <HorseLane
         v-for="lane in trackLanes"
@@ -55,6 +65,21 @@ const trackLanes = computed(() => {
   display: flex;
   flex-direction: column;
   background-color: #f5f5f5;
+}
+
+.track-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+}
+
+.track-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
 }
 
 .track-lanes {
