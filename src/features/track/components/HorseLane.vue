@@ -1,20 +1,27 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import type { Horse } from '@/stores/modules/horses'
 
 interface Props {
   laneNumber: number
   horse: Horse | null
-  horsePosition: number
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+const store = useStore()
+
+const horseProgress = computed(() => {
+  if (!props.horse) return 0
+  return store.getters['race/getProgressForHorse'](props.horse.id.toString())
+})
 </script>
 
 <template>
   <div class="horse-lane">
     <div class="lane-number">{{ laneNumber }}</div>
     <div class="lane-track">
-      <div v-if="horse" class="horse" :style="{ left: `${horsePosition}%` }">
+      <div v-if="horse" class="horse" :style="{ left: `${horseProgress}%` }">
         <span class="horse-icon">🐎</span>
         <span class="horse-name">{{ horse.name }}</span>
       </div>

@@ -2,10 +2,10 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import HorseLane from './components/HorseLane.vue'
+import type { Horse } from '@/stores/modules/horses'
 
 const store = useStore()
 
-const isGenerated = computed(() => store.getters['race/isGenerated'])
 const currentRound = computed(() => store.getters['race/currentRound'])
 const isRaceRunning = computed(() => store.getters['race/isRaceRunning'])
 
@@ -21,14 +21,12 @@ const trackLanes = computed(() => {
     return Array.from({ length: 10 }, (_, i) => ({
       id: i + 1,
       horse: null,
-      position: 0,
     }))
   }
 
-  return currentRound.value.selectedHorses.map((horse: any, index: number) => ({
+  return currentRound.value.selectedHorses.map((horse: Horse, index: number) => ({
     id: index + 1,
     horse,
-    position: 0,
   }))
 })
 </script>
@@ -41,7 +39,6 @@ const trackLanes = computed(() => {
         :key="lane.id"
         :lane-number="lane.id"
         :horse="lane.horse"
-        :horse-position="lane.position"
       />
     </div>
 

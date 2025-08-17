@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
+import { useRaceTimer } from './composables/useRaceTimer'
 
 const store = useStore()
+const { startRace, pauseRace, cleanup, isRaceRunning } = useRaceTimer()
 
 const isGenerated = computed(() => store.getters['race/isGenerated'])
 
@@ -10,9 +12,18 @@ function handleGenerate() {
   store.dispatch('race/generateRace')
 }
 
-function handleStart() {
-  console.log('Start race')
+function handleStartPause() {
+  if (isRaceRunning.value) {
+    pauseRace()
+  } else {
+    startRace()
+  }
 }
+
+// Cleanup on component unmount
+onUnmounted(() => {
+  cleanup()
+})
 </script>
 
 <template>
@@ -20,8 +31,8 @@ function handleStart() {
     <button class="btn generate-btn" @click="handleGenerate" :disabled="isGenerated">
       {{ isGenerated ? 'PROGRAM GENERATED' : 'GENERATE PROGRAM' }}
     </button>
-    <button class="btn start-btn" @click="handleStart" :disabled="!isGenerated">
-      START / PAUSE
+    <button class="btn start-btn" @click="handleStartPause" :disabled="!isGenerated">
+      {{ isRaceRunning ? 'PAUSE' : 'START' }}
     </button>
   </div>
 </template>
