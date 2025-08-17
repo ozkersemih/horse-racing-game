@@ -1,55 +1,11 @@
 <script setup lang="ts">
-const horsesWithPosition = [
-  { position: 1, name: 'Ada Lawrence' },
-  { position: 2, name: 'Grand Hopper' },
-  { position: 3, name: 'Margaret Hamilton' },
-  { position: 4, name: 'Ada Lawrence' },
-  { position: 5, name: 'Grand Hopper' },
-  { position: 6, name: 'Margaret Hamilton' },
-  { position: 7, name: 'Ada Lawrence' },
-  { position: 8, name: 'Grand Hopper' },
-  { position: 9, name: 'Margaret Hamilton' },
-  { position: 10, name: 'Ada Lawrence' },
-]
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
-const mockProgram = [
-  {
-    round: 1,
-    distance: '1200m',
-    horses: horsesWithPosition,
-  },
-  {
-    round: 2,
-    distance: '1400m',
-    horses: horsesWithPosition,
-  },
-  {
-    round: 3,
-    distance: '1600m',
-    horses: horsesWithPosition,
-  },
-  {
-    round: 4,
-    distance: '1800m',
-    horses: horsesWithPosition,
-  },
-  {
-    round: 5,
-    distance: '2000m',
-    horses: horsesWithPosition,
-  },
-  {
-    round: 6,
-    distance: '2200m',
-    horses: horsesWithPosition,
-  },
-]
+const store = useStore()
 
-const mockResults = mockProgram.map((round) => ({
-  round: round.round,
-  distance: round.distance,
-  horses: round.horses.slice().sort((a, b) => a.position - b.position),
-}))
+const rounds = computed(() => store.getters['race/rounds'])
+const isGenerated = computed(() => store.getters['race/isGenerated'])
 </script>
 
 <template>
@@ -57,16 +13,17 @@ const mockResults = mockProgram.map((round) => ({
     <div class="program-panel">
       <div class="panel-header">Program</div>
       <div class="panel-content">
-        <div v-for="item in mockProgram" :key="item.round" class="round-section">
-          <div class="round-title">{{ item.round }}ST Lap - {{ item.distance }}</div>
-          <div class="horses-table">
-            <div
-              v-for="horse in item.horses"
-              :key="`${item.round}-${horse.position}`"
-              class="horse-row"
-            >
-              <span class="position">{{ horse.position }}</span>
-              <span class="name">{{ horse.name }}</span>
+        <div v-if="!isGenerated" class="empty-state">
+          Click "Generate Program" to create race schedule
+        </div>
+        <div v-else>
+          <div v-for="round in rounds" :key="round.id" class="round-section">
+            <div class="round-title">{{ round.id }}ST Lap - {{ round.distance }}</div>
+            <div class="horses-table">
+              <div v-for="(horse, index) in round.selectedHorses" :key="horse.id" class="horse-row">
+                <span class="position">{{ index + 1 }}</span>
+                <span class="name">{{ horse.name }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -76,19 +33,10 @@ const mockResults = mockProgram.map((round) => ({
     <div class="results-panel">
       <div class="panel-header">Results</div>
       <div class="panel-content">
-        <div v-for="result in mockResults" :key="result.round" class="round-section">
-          <div class="round-title">{{ result.round }}ST Lap - {{ result.distance }}</div>
-          <div class="horses-table">
-            <div
-              v-for="horse in result.horses"
-              :key="`result-${result.round}-${horse.position}`"
-              class="horse-row"
-            >
-              <span class="position">{{ horse.position }}</span>
-              <span class="name">{{ horse.name }}</span>
-            </div>
-          </div>
+        <div v-if="!isGenerated" class="empty-state">
+          Race results will appear when race is finished
         </div>
+        <div v-else class="empty-state">Click "Start" to begin racing</div>
       </div>
     </div>
   </div>
@@ -122,6 +70,14 @@ const mockResults = mockProgram.map((round) => ({
   flex: 1;
   overflow-y: auto;
   min-height: 0;
+}
+
+.empty-state {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  font-size: 12px;
 }
 
 .round-section {

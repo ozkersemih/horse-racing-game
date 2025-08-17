@@ -1,9 +1,28 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+
+const store = useStore()
+
+const isGenerated = computed(() => store.getters['race/isGenerated'])
+
+function handleGenerate() {
+  store.dispatch('race/generateRace')
+}
+
+function handleStart() {
+  console.log('Start race')
+}
+</script>
 
 <template>
   <div class="race-controls">
-    <button class="btn generate-btn">GENERATE PROGRAM</button>
-    <button class="btn start-btn">START / PAUSE</button>
+    <button class="btn generate-btn" @click="handleGenerate" :disabled="isGenerated">
+      {{ isGenerated ? 'PROGRAM GENERATED' : 'GENERATE PROGRAM' }}
+    </button>
+    <button class="btn start-btn" @click="handleStart" :disabled="!isGenerated">
+      START / PAUSE
+    </button>
   </div>
 </template>
 
@@ -22,12 +41,16 @@
   transition: background-color 0.2s;
 }
 
+.btn:disabled {
+  opacity: 0.6;
+}
+
 .generate-btn {
   background-color: #4caf50;
   color: white;
 }
 
-.generate-btn:hover {
+.generate-btn:hover:not(:disabled) {
   background-color: #45a049;
 }
 
@@ -36,7 +59,7 @@
   color: white;
 }
 
-.start-btn:hover {
+.start-btn:hover:not(:disabled) {
   background-color: #da190b;
 }
 </style>
