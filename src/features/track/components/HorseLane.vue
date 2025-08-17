@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import type { Horse } from '@/stores/modules/horses'
+import HorseDisplay from './Horse.vue'
 
 interface Props {
   laneNumber: number
@@ -21,14 +22,7 @@ const horseProgress = computed(() => {
   <div class="horse-lane">
     <div class="lane-number">{{ laneNumber }}</div>
     <div class="lane-track">
-      <div
-        v-if="horse"
-        class="horse"
-        :style="{ left: `${horseProgress}%`, transform: `translateX(-${horseProgress}%)` }"
-      >
-        <span class="horse-icon">🐎</span>
-        <span class="horse-name">{{ horse.name }}</span>
-      </div>
+      <HorseDisplay v-if="horse" :horse="horse" :progress="horseProgress" :show-progress="false" />
       <div v-else class="empty-lane">Empty Lane</div>
     </div>
   </div>
@@ -63,24 +57,6 @@ const horseProgress = computed(() => {
   border-left: 1px solid #ddd;
   display: flex;
   align-items: center;
-}
-
-.horse {
-  position: relative;
-  font-size: 10px;
-}
-
-.horse-icon {
-  font-size: 16px;
-}
-
-.horse-name {
-  position: absolute;
-  top: -60%;
-  right: -100%;
-  font-weight: bold;
-  color: #333;
-  white-space: nowrap;
 }
 
 .empty-lane {
