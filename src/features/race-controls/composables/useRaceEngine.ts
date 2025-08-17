@@ -48,7 +48,6 @@ export function useRaceEngine() {
       })
       return false
     } else if (currentMeters >= distanceMeters) {
-      console.log(horse.id, horse.name, 'finished')
       const finishTime = Date.now()
       store.commit('race/SET_HORSE_FINISH_TIME', {
         horseId: horse.id.toString(),
