@@ -1,10 +1,5 @@
 <script setup lang="ts">
-interface Horse {
-  id: number
-  name: string
-  color: string
-  condition: number
-}
+import type { Horse } from '@/stores/modules/horses'
 
 interface Props {
   horse: Horse
