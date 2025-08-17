@@ -43,7 +43,7 @@ describe('horses store', () => {
         expect(h.name.length).toBeGreaterThan(0)
         expect(typeof h.color).toBe('string')
         expect(h.color.length).toBeGreaterThan(0)
-        expect(h.condition).toBeGreaterThanOrEqual(67)
+        expect(h.condition).toBeGreaterThanOrEqual(0)
         expect(h.condition).toBeLessThanOrEqual(100)
       })
     })

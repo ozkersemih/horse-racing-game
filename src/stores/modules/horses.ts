@@ -65,13 +65,14 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 function generateHorses(): Horse[] {
-  const shuffledNames = shuffleArray(horseNames)
+  const names = shuffleArray(horseNames)
+  const colors = shuffleArray(horseColors)
 
   return Array.from({ length: 20 }, (_, i) => ({
     id: i + 1,
-    name: shuffledNames[i],
-    color: horseColors[Math.floor(Math.random() * horseColors.length)],
-    condition: Math.floor(Math.random() * 34) + 67,
+    name: names[i],
+    color: colors[i],
+    condition: Math.floor(Math.random() * 100) + 1,
   }))
 }
 
