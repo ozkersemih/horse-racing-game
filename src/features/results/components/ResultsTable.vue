@@ -5,7 +5,7 @@ defineOptions({
 
 export interface TableItem {
   key: string | number
-  position: number | string
+  position: number
   name: string
 }
 
