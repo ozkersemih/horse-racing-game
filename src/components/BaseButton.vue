@@ -15,7 +15,7 @@ function handleClick() {
 <template>
   <button
     class="base-button"
-    :class="[variant, { disabled }]"
+    :class="[variant ?? 'primary', { disabled }]"
     :disabled="disabled"
     @click="handleClick"
   >
