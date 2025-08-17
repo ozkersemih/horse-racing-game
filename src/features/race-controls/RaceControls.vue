@@ -8,6 +8,7 @@ const store = useStore()
 const { startRace, pauseRace, cleanup, isRaceRunning } = useRaceTimer()
 
 const isGenerated = computed(() => store.getters['race/isGenerated'])
+const raceStatus = computed(() => store.getters['race/raceStatus'])
 
 function handleGenerate() {
   store.dispatch('race/generateRace')
@@ -18,6 +19,16 @@ function handleStartPause() {
     pauseRace()
   } else {
     startRace()
+  }
+}
+
+function getStartPauseButtonText(): string {
+  if (raceStatus.value === 'running') {
+    return 'PAUSE'
+  } else if (raceStatus.value === 'paused') {
+    return 'RESUME'
+  } else {
+    return 'START'
   }
 }
 
@@ -32,7 +43,7 @@ onUnmounted(() => {
       {{ isGenerated ? 'PROGRAM GENERATED' : 'GENERATE PROGRAM' }}
     </BaseButton>
     <BaseButton variant="danger" :disabled="!isGenerated" @click="handleStartPause">
-      {{ isRaceRunning ? 'PAUSE' : 'START' }}
+      {{ getStartPauseButtonText() }}
     </BaseButton>
   </div>
 </template>

@@ -14,10 +14,13 @@ export type RoundResult = {
   position: number
 }
 
+export type RaceStatus = 'idle' | 'running' | 'paused' | 'finished'
+
 export type RaceState = {
   rounds: Round[]
   isGenerated: boolean
   isRaceRunning: boolean
+  raceStatus: RaceStatus
   currentRoundIndex: number
   progressMap: { [horseId: string]: number }
   finishTimeMap: { [horseId: string]: number }
@@ -37,6 +40,7 @@ const raceModule = {
     rounds: [],
     isGenerated: false,
     isRaceRunning: false,
+    raceStatus: 'idle',
     currentRoundIndex: 0,
     progressMap: {},
     finishTimeMap: {},
@@ -47,6 +51,7 @@ const raceModule = {
       state.rounds = rounds
       state.isGenerated = true
       state.currentRoundIndex = 1
+      state.raceStatus = 'idle'
       state.progressMap = {}
       state.finishTimeMap = {}
     },
@@ -54,15 +59,18 @@ const raceModule = {
       state.rounds = []
       state.isGenerated = false
       state.isRaceRunning = false
+      state.raceStatus = 'idle'
       state.currentRoundIndex = 0
       state.progressMap = {}
       state.finishTimeMap = {}
     },
     START_RACE(state: RaceState) {
       state.isRaceRunning = true
+      state.raceStatus = 'running'
     },
     PAUSE_RACE(state: RaceState) {
       state.isRaceRunning = false
+      state.raceStatus = 'paused'
     },
     UPDATE_HORSE_PROGRESS(
       state: RaceState,
@@ -95,6 +103,7 @@ const raceModule = {
     },
     FINISH_RACE(state: RaceState) {
       state.isRaceRunning = false
+      state.raceStatus = 'finished'
     },
   },
 
@@ -137,6 +146,7 @@ const raceModule = {
     getCompletedRounds: (state: RaceState) => {
       return state.rounds.filter((round) => round.results && round.results.length > 0)
     },
+    raceStatus: (state: RaceState) => state.raceStatus,
   },
 }
 

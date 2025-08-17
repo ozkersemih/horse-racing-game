@@ -15,6 +15,7 @@ export function useRaceTimer() {
   const isRaceRunning = computed(() => store.getters['race/isRaceRunning'])
   const currentRound = computed(() => store.getters['race/currentRound'])
   const progressMap = computed(() => store.getters['race/progressMap'])
+  const raceStatus = computed(() => store.getters['race/raceStatus'])
 
   function calculateSpeedForHorse(horse: Horse): number {
     const conditionBonus = horse.condition * SPEED_MULTIPLIER
@@ -116,10 +117,12 @@ export function useRaceTimer() {
     }
   }
 
-  function startRaceTimer() {
+  function startRaceTimer({ reset = true }: { reset?: boolean } = {}) {
     if (raceInterval.value) return
 
-    store.commit('race/RESET_ROUND_PROGRESS')
+    if (reset) {
+      store.commit('race/RESET_ROUND_PROGRESS')
+    }
 
     raceInterval.value = window.setInterval(() => {
       updateRoundProgress()
@@ -134,8 +137,11 @@ export function useRaceTimer() {
   }
 
   function startRace() {
+    const isResume = raceStatus.value === 'paused'
+
     store.dispatch('race/startRace')
-    startRaceTimer()
+
+    startRaceTimer({ reset: !isResume })
   }
 
   function pauseRace() {

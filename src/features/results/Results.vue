@@ -14,7 +14,7 @@ const store = useStore()
 const rounds = computed(() => store.getters['race/rounds'])
 const isGenerated = computed(() => store.getters['race/isGenerated'])
 const completedRounds = computed(() => store.getters['race/getCompletedRounds'])
-const isRaceRunning = computed(() => store.getters['race/isRaceRunning'])
+const raceStatus = computed(() => store.getters['race/raceStatus'])
 
 const programTables = computed(() => {
   if (!rounds.value.length) return []
@@ -50,12 +50,13 @@ const programEmptyMessage = computed(() => 'Click "Generate Program" to create r
 
 const resultsEmptyState = computed(() => {
   if (!isGenerated.value) return true
-  if (!isRaceRunning.value && completedRounds.value.length === 0) return true
+  if (raceStatus.value === 'idle' && completedRounds.value.length === 0) return true
   return false
 })
 
 const resultsEmptyMessage = computed(() => {
   if (!isGenerated.value) return 'Race results will appear when race is finished'
+  if (raceStatus.value === 'paused') return 'Click "Resume" to continue racing'
   return 'Click "Start" to begin racing'
 })
 </script>
