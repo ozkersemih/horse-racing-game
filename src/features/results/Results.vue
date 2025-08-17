@@ -45,10 +45,14 @@ const resultsTables = computed(() => {
   }))
 })
 
-const programEmptyState = computed(() => !isGenerated.value)
+const programEmptyState = computed(() => {
+  if (raceStatus.value === 'finished') return false
+  return !isGenerated.value
+})
 const programEmptyMessage = computed(() => 'Click "Generate Program" to create race schedule')
 
 const resultsEmptyState = computed(() => {
+  if (raceStatus.value === 'finished') return false
   if (!isGenerated.value) return true
   if (raceStatus.value === 'idle' && completedRounds.value.length === 0) return true
   return false

@@ -13,7 +13,7 @@ export function useRaceEngine() {
   const raceInterval = ref<number | null>(null)
   const RACE_TIME_INTERVAL = 100
   const ROUND_WAIT_TIME = 2000
-  const BASE_SPEED = 5
+  const BASE_SPEED = 12
   const SPEED_MULTIPLIER = 0.1
   const SPEED_RANDOM_FACTOR = 2
 

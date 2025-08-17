@@ -104,6 +104,7 @@ const raceModule = {
     FINISH_RACE(state: RaceState) {
       state.isRaceRunning = false
       state.raceStatus = 'finished'
+      state.isGenerated = false
     },
   },
 
@@ -134,7 +135,7 @@ const raceModule = {
     currentRoundIndex: (state: RaceState) => state.currentRoundIndex,
     progressMap: (state: RaceState) => state.progressMap,
     currentRound: (state: RaceState) => {
-      if (!state.isGenerated || state.currentRoundIndex === 0) return null
+      if (state.currentRoundIndex === 0) return null
       return state.rounds[state.currentRoundIndex - 1]
     },
     getProgressForHorse: (state: RaceState, getters: any) => (horseId: string) => {
