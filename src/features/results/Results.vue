@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import ResultsPanel from './components/ResultsPanel.vue'
+import type { Round, RoundResult } from '@/stores/modules/race'
+import type { Horse } from '@/stores/modules/horses'
+
+defineOptions({
+  name: 'ResultsView',
+})
 
 const store = useStore()
 
@@ -8,52 +15,65 @@ const rounds = computed(() => store.getters['race/rounds'])
 const isGenerated = computed(() => store.getters['race/isGenerated'])
 const completedRounds = computed(() => store.getters['race/getCompletedRounds'])
 const isRaceRunning = computed(() => store.getters['race/isRaceRunning'])
+
+const programTables = computed(() => {
+  if (!rounds.value.length) return []
+
+  return rounds.value.map((round: Round) => ({
+    id: round.id,
+    title: `${round.id}ST Lap - ${round.distance}`,
+    items: round.selectedHorses.map((horse: Horse, index: number) => ({
+      key: horse.id,
+      position: index + 1,
+      name: horse.name,
+    })),
+  }))
+})
+
+const resultsTables = computed(() => {
+  if (!completedRounds.value.length) return []
+
+  return completedRounds.value.map((round: Round) => ({
+    id: round.id,
+    title: `${round.id}ST Lap - ${round.distance}`,
+    items:
+      round.results?.map((result: RoundResult) => ({
+        key: result.horseId,
+        position: result.position,
+        name: result.horseName,
+      })) || [],
+  }))
+})
+
+const programEmptyState = computed(() => !isGenerated.value)
+const programEmptyMessage = computed(() => 'Click "Generate Program" to create race schedule')
+
+const resultsEmptyState = computed(() => {
+  if (!isGenerated.value) return true
+  if (!isRaceRunning.value && completedRounds.value.length === 0) return true
+  return false
+})
+
+const resultsEmptyMessage = computed(() => {
+  if (!isGenerated.value) return 'Race results will appear when race is finished'
+  return 'Click "Start" to begin racing'
+})
 </script>
 
 <template>
   <div class="results">
-    <div class="program-panel">
-      <div class="panel-header">Program</div>
-      <div class="panel-content">
-        <div v-if="!isGenerated" class="empty-state">
-          Click "Generate Program" to create race schedule
-        </div>
-        <div v-else>
-          <div v-for="round in rounds" :key="round.id" class="round-section">
-            <div class="round-title">{{ round.id }}ST Lap - {{ round.distance }}</div>
-            <div class="horses-table">
-              <div v-for="(horse, index) in round.selectedHorses" :key="horse.id" class="horse-row">
-                <span class="position">{{ index + 1 }}</span>
-                <span class="name">{{ horse.name }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="results-panel">
-      <div class="panel-header">Results</div>
-      <div class="panel-content">
-        <div v-if="!isGenerated" class="empty-state">
-          Race results will appear when race is finished
-        </div>
-        <div v-else-if="!isRaceRunning && completedRounds.length === 0" class="empty-state">
-          Click "Start" to begin racing
-        </div>
-        <div v-else>
-          <div v-for="round in completedRounds" :key="round.id" class="round-section">
-            <div class="round-title">{{ round.id }}ST Lap - {{ round.distance }}</div>
-            <div class="horses-table">
-              <div v-for="result in round.results" :key="result.horseId" class="horse-row">
-                <span class="position">{{ result.position }}</span>
-                <span class="name">{{ result.horseName }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ResultsPanel
+      title="Program"
+      :show-empty-state="programEmptyState"
+      :empty-state-message="programEmptyMessage"
+      :tables="programTables"
+    />
+    <ResultsPanel
+      title="Results"
+      :show-empty-state="resultsEmptyState"
+      :empty-state-message="resultsEmptyMessage"
+      :tables="resultsTables"
+    />
   </div>
 </template>
 
@@ -62,72 +82,5 @@ const isRaceRunning = computed(() => store.getters['race/isRaceRunning'])
   height: 100%;
   display: flex;
   gap: 1px;
-}
-
-.program-panel,
-.results-panel {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
-}
-
-.panel-header {
-  background-color: #2196f3;
-  color: white;
-  padding: 8px;
-  text-align: center;
-  font-weight: bold;
-  font-size: 12px;
-}
-
-.panel-content {
-  flex: 1;
-  overflow-y: auto;
-  min-height: 0;
-}
-
-.empty-state {
-  padding: 20px;
-  text-align: center;
-  color: #666;
-  font-style: italic;
-  font-size: 12px;
-}
-
-.round-section {
-  border-bottom: 2px solid #eee;
-}
-
-.round-title {
-  background-color: #f8f9fa;
-  padding: 6px 8px;
-  font-weight: bold;
-  font-size: 11px;
-  color: #333;
-  border-bottom: 1px solid #ddd;
-}
-
-.horses-table {
-  padding: 4px 8px;
-}
-
-.horse-row {
-  display: flex;
-  padding: 2px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.position {
-  width: 20px;
-  font-weight: bold;
-  font-size: 10px;
-  color: #666;
-}
-
-.name {
-  flex: 1;
-  font-size: 10px;
-  color: #333;
 }
 </style>
