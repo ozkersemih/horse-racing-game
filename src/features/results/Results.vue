@@ -6,6 +6,8 @@ const store = useStore()
 
 const rounds = computed(() => store.getters['race/rounds'])
 const isGenerated = computed(() => store.getters['race/isGenerated'])
+const completedRounds = computed(() => store.getters['race/getCompletedRounds'])
+const isRaceRunning = computed(() => store.getters['race/isRaceRunning'])
 </script>
 
 <template>
@@ -36,7 +38,20 @@ const isGenerated = computed(() => store.getters['race/isGenerated'])
         <div v-if="!isGenerated" class="empty-state">
           Race results will appear when race is finished
         </div>
-        <div v-else class="empty-state">Click "Start" to begin racing</div>
+        <div v-else-if="!isRaceRunning && completedRounds.length === 0" class="empty-state">
+          Click "Start" to begin racing
+        </div>
+        <div v-else>
+          <div v-for="round in completedRounds" :key="round.id" class="round-section">
+            <div class="round-title">{{ round.id }}ST Lap - {{ round.distance }}</div>
+            <div class="horses-table">
+              <div v-for="result in round.results" :key="result.horseId" class="horse-row">
+                <span class="position">{{ result.position }}</span>
+                <span class="name">{{ result.horseName }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

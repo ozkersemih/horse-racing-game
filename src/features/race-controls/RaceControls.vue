@@ -20,7 +20,6 @@ function handleStartPause() {
   }
 }
 
-// Cleanup on component unmount
 onUnmounted(() => {
   cleanup()
 })
