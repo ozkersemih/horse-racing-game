@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import type { Horse } from '@/stores/modules/horses'
+
 interface Props {
   laneNumber: number
+  horse: Horse | null
   horsePosition: number
 }
 
@@ -11,7 +14,11 @@ defineProps<Props>()
   <div class="horse-lane">
     <div class="lane-number">{{ laneNumber }}</div>
     <div class="lane-track">
-      <div class="horse-icon" :style="{ left: `${horsePosition}%` }">🐎</div>
+      <div v-if="horse" class="horse" :style="{ left: `${horsePosition}%` }">
+        <span class="horse-icon">🐎</span>
+        <span class="horse-name">{{ horse.name }}</span>
+      </div>
+      <div v-else class="empty-lane">Empty Lane</div>
     </div>
   </div>
 </template>
@@ -43,12 +50,32 @@ defineProps<Props>()
   height: 100%;
   background-color: #f9f9f9;
   border-left: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+}
+
+.horse {
+  position: relative;
+  font-size: 10px;
 }
 
 .horse-icon {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   font-size: 16px;
+}
+
+.horse-name {
+  position: absolute;
+  top: -60%;
+  right: -100%;
+  font-weight: bold;
+  color: #333;
+  white-space: nowrap;
+}
+
+.empty-lane {
+  color: #999;
+  font-style: italic;
+  font-size: 10px;
+  margin-left: 8px;
 }
 </style>

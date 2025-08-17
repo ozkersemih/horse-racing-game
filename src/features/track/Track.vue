@@ -1,25 +1,52 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import HorseLane from './components/HorseLane.vue'
 
-const lanes = Array.from({ length: 10 }, (_, i) => ({
-  id: i + 1,
-  position: 0,
-}))
+const store = useStore()
+
+const isGenerated = computed(() => store.getters['race/isGenerated'])
+const currentRound = computed(() => store.getters['race/currentRound'])
+const isRaceRunning = computed(() => store.getters['race/isRaceRunning'])
+
+const lapInfo = computed(() => {
+  if (!currentRound.value) return 'No Race Generated'
+  if (!isRaceRunning.value)
+    return `Ready: ${currentRound.value.id}ST Lap - ${currentRound.value.distance}`
+  return `${currentRound.value.id}ST Lap - ${currentRound.value.distance}`
+})
+
+const trackLanes = computed(() => {
+  if (!currentRound.value) {
+    return Array.from({ length: 10 }, (_, i) => ({
+      id: i + 1,
+      horse: null,
+      position: 0,
+    }))
+  }
+
+  return currentRound.value.selectedHorses.map((horse: any, index: number) => ({
+    id: index + 1,
+    horse,
+    position: 0,
+  }))
+})
 </script>
 
 <template>
   <div class="track">
     <div class="track-lanes">
       <HorseLane
-        v-for="lane in lanes"
+        v-for="lane in trackLanes"
         :key="lane.id"
         :lane-number="lane.id"
+        :horse="lane.horse"
         :horse-position="lane.position"
       />
     </div>
 
     <div class="track-footer">
-      <span class="lap-info">1st Lap 1200m</span>
+      <span class="lap-info">{{ lapInfo }}</span>
       <span class="finish-label">FINISH</span>
     </div>
   </div>
@@ -58,7 +85,7 @@ const lanes = Array.from({ length: 10 }, (_, i) => ({
 }
 
 .finish-label {
-  background-color: #ff5722;
+  background-color: #f44336;
   color: white;
   padding: 4px 8px;
   border-radius: 3px;
