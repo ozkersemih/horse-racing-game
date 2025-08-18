@@ -9,17 +9,18 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="horse-item">
-    <div class="horse-number">{{ horse.id }}</div>
+  <div class="horse-item" data-testid="horse-item">
+    <div class="horse-number" data-testid="horse-number">{{ horse.id }}</div>
     <div>
-      <div class="horse-name">{{ horse.name }}</div>
-      <div class="horse-details">
-        <span class="horse-condition">{{ horse.condition }}</span>
+      <div class="horse-name" data-testid="horse-name">{{ horse.name }}</div>
+      <div class="horse-details" data-testid="horse-details">
+        <span class="horse-condition" data-testid="horse-condition">{{ horse.condition }}</span>
         <div
           class="horse-color-indicator"
+          data-testid="horse-color-indicator"
           :style="{ backgroundColor: horse.color.toLowerCase() }"
         ></div>
-        <span class="horse-color-text">{{ horse.color }}</span>
+        <span class="horse-color-text" data-testid="horse-color-text">{{ horse.color }}</span>
       </div>
     </div>
   </div>

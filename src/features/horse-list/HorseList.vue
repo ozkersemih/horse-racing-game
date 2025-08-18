@@ -13,12 +13,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="horse-list">
-    <div class="horse-list-header">
-      <h3>Horse List (1-20)</h3>
+  <div class="horse-list" data-testid="horse-list">
+    <div class="horse-list-header" data-testid="horse-list-header">
+      <h3 data-testid="horse-list-title">Horse List (1-20)</h3>
     </div>
 
-    <div class="horse-list-content">
+    <div class="horse-list-content" data-testid="horse-list-content">
       <HorseListItem v-for="horse in horses" :key="horse.id" :horse="horse" />
     </div>
   </div>

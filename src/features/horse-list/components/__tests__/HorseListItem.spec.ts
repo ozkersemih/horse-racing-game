@@ -17,7 +17,7 @@ describe('HorseListItem', () => {
     })
 
     expect(wrapper.exists()).toBe(true)
-    expect(wrapper.classes()).toContain('horse-item')
+    expect(wrapper.get('[data-testid="horse-item"]')).toBeTruthy()
   })
 
   describe('Props', () => {
@@ -26,10 +26,10 @@ describe('HorseListItem', () => {
         props: { horse: mockHorse },
       })
 
-      expect(wrapper.find('.horse-number').text()).toBe('1')
-      expect(wrapper.find('.horse-name').text()).toBe('Thunder Bolt')
-      expect(wrapper.find('.horse-condition').text()).toBe('85')
-      expect(wrapper.find('.horse-color-text').text()).toBe('Red')
+      expect(wrapper.get('[data-testid="horse-number"]').text()).toBe('1')
+      expect(wrapper.get('[data-testid="horse-name"]').text()).toBe('Thunder Bolt')
+      expect(wrapper.get('[data-testid="horse-condition"]').text()).toBe('85')
+      expect(wrapper.get('[data-testid="horse-color-text"]').text()).toBe('Red')
     })
 
     it('should apply correct background color to color indicator', () => {
@@ -37,7 +37,7 @@ describe('HorseListItem', () => {
         props: { horse: mockHorse },
       })
 
-      const colorIndicator = wrapper.find('.horse-color-indicator')
+      const colorIndicator = wrapper.get('[data-testid="horse-color-indicator"]')
       expect(colorIndicator.attributes('style')).toContain('background-color: red')
     })
   })
