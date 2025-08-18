@@ -2,7 +2,7 @@
 
 A modern Vue 3-based horse racing simulation built with feature-based architecture, TypeScript for type safety, and comprehensive test coverage.
 
-**Live Demo**: [https://username.github.io/horse-racing-game/](https://username.github.io/horse-racing-game/)
+**Live Demo**: [https://ozkersemih.github.io/horse-racing-game/](https://ozkersemih.github.io/horse-racing-game/)
 
 ## Features
 
