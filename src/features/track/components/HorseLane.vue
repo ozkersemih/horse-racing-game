@@ -8,7 +8,6 @@ interface Props {
   laneNumber: number
   horse: Horse | null
 }
-
 const props = defineProps<Props>()
 const store = useStore()
 
@@ -19,11 +18,17 @@ const horseProgress = computed(() => {
 </script>
 
 <template>
-  <div class="horse-lane">
-    <div class="lane-number">{{ laneNumber }}</div>
-    <div class="lane-track">
-      <HorseDisplay v-if="horse" :horse="horse" :progress="horseProgress" :show-progress="false" />
-      <div v-else class="empty-lane">Empty Lane</div>
+  <div class="horse-lane" data-testid="horse-lane">
+    <div class="lane-number" data-testid="lane-number">{{ laneNumber }}</div>
+    <div class="lane-track" data-testid="lane-track">
+      <HorseDisplay
+        v-if="horse"
+        :horse="horse"
+        :progress="horseProgress"
+        :show-progress="false"
+        data-testid="horse-display"
+      />
+      <div v-else class="empty-lane" data-testid="empty-lane">Empty Lane</div>
     </div>
   </div>
 </template>

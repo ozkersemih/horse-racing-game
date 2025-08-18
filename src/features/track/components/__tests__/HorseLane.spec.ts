@@ -7,7 +7,7 @@ vi.mock('@/features/track/components/Horse.vue', () => ({
   default: {
     name: 'HorseDisplay',
     props: ['horse', 'progress', 'showProgress'],
-    template: '<div class="stub-horse">{{ horse?.name }} - {{ progress }}%</div>',
+    template: '<div data-testid="stub-horse">{{ horse?.name }} - {{ progress }}%</div>',
   },
 }))
 
@@ -17,9 +17,7 @@ const mockStore = {
   },
 }
 
-vi.mock('vuex', () => ({
-  useStore: () => mockStore,
-}))
+vi.mock('vuex', () => ({ useStore: () => mockStore }))
 
 const mockHorse: Horse = { id: 1, name: 'Thunder', color: '#ff0000', condition: 85 }
 
@@ -31,7 +29,7 @@ describe('HorseLane', () => {
 
   it('renders lane number and HorseDisplay when horse exists', () => {
     const wrapper = mount(HorseLane, { props: { laneNumber: 3, horse: mockHorse } })
-    expect(wrapper.find('.lane-number').text()).toBe('3')
+    expect(wrapper.get('[data-testid="lane-number"]').text()).toBe('3')
     const horseDisplay = wrapper.findComponent({ name: 'HorseDisplay' })
     expect(horseDisplay.exists()).toBe(true)
     expect(horseDisplay.props('horse')).toEqual(mockHorse)
@@ -40,7 +38,7 @@ describe('HorseLane', () => {
 
   it('renders empty lane when horse is null', () => {
     const wrapper = mount(HorseLane, { props: { laneNumber: 2, horse: null } })
-    expect(wrapper.find('.empty-lane').text()).toBe('Empty Lane')
+    expect(wrapper.get('[data-testid="empty-lane"]').text()).toBe('Empty Lane')
     expect(wrapper.findComponent({ name: 'HorseDisplay' }).exists()).toBe(false)
   })
 

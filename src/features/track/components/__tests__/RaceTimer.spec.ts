@@ -28,15 +28,14 @@ describe('RaceTimer', () => {
 
   it('does not render when shouldShowTimer is false', () => {
     const wrapper = mount(RaceTimer)
-    expect(wrapper.find('.race-timer').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="race-timer"]').exists()).toBe(false)
   })
 
   it('renders formatted time when shouldShowTimer is true', () => {
     showRef.value = true
     elapsedRef.value = 123
     const wrapper = mount(RaceTimer)
-    const el = wrapper.find('.race-timer')
-    expect(el.exists()).toBe(true)
+    const el = wrapper.get('[data-testid="race-timer"]')
     expect(formatFn).toHaveBeenCalledWith(123)
     expect(el.text()).toBe('t:123')
   })
@@ -46,10 +45,10 @@ describe('RaceTimer', () => {
     const wrapper = mount(RaceTimer)
     elapsedRef.value = 45
     await nextTick()
-    expect(wrapper.find('.race-timer').text()).toBe('t:45')
+    expect(wrapper.get('[data-testid="race-timer"]').text()).toBe('t:45')
     elapsedRef.value = 90
     await nextTick()
-    expect(wrapper.find('.race-timer').text()).toBe('t:90')
+    expect(wrapper.get('[data-testid="race-timer"]').text()).toBe('t:90')
   })
 
   it('calls cleanup on unmount', () => {

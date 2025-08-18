@@ -14,7 +14,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div v-if="shouldShowTimer" class="race-timer">
+  <div v-if="shouldShowTimer" class="race-timer" data-testid="race-timer">
     {{ formatTime(elapsedTime) }}
   </div>
 </template>

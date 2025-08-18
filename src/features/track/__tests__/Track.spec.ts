@@ -10,14 +10,14 @@ vi.mock('../components/HorseLane.vue', () => ({
       laneNumber: { type: Number, required: true },
       horse: { type: Object, required: false },
     },
-    template: `<div class="stub-horse-lane">lane-{{ laneNumber }} - {{ horse ? horse.name : 'empty' }}</div>`,
+    template: `<div data-testid="horse-lane">lane-{{ laneNumber }} - {{ horse ? horse.name : 'empty' }}</div>`,
   },
 }))
 
 vi.mock('../components/RaceTimer.vue', () => ({
   default: {
     name: 'RaceTimer',
-    template: `<div class="stub-race-timer">TIMER</div>`,
+    template: `<div data-testid="race-timer">TIMER</div>`,
   },
 }))
 
@@ -57,13 +57,13 @@ describe('RaceTrack.vue', () => {
 
   it('renders header title and RaceTimer', () => {
     const wrapper = mountWith()
-    expect(wrapper.find('.track-title').text()).toBe('RACE TRACK')
-    expect(wrapper.find('.stub-race-timer').exists()).toBe(true)
+    expect(wrapper.get('[data-testid="track-title"]').text()).toBe('RACE TRACK')
+    expect(wrapper.get('[data-testid="race-timer"]').exists()).toBe(true)
   })
 
   it('renders 10 empty lanes when there is no current round', () => {
     const wrapper = mountWith({ 'race/currentRound': null })
-    const lanes = wrapper.findAll('.stub-horse-lane')
+    const lanes = wrapper.findAll('[data-testid="horse-lane"]')
     expect(lanes.length).toBe(10)
     expect(lanes[0].text()).toContain('lane-1 - empty')
     expect(lanes[9].text()).toContain('lane-10 - empty')
@@ -80,7 +80,7 @@ describe('RaceTrack.vue', () => {
         ],
       },
     })
-    const lanes = wrapper.findAll('.stub-horse-lane')
+    const lanes = wrapper.findAll('[data-testid="horse-lane"]')
     expect(lanes.length).toBe(2)
     expect(lanes[0].text()).toContain('lane-1 - Thunder')
     expect(lanes[1].text()).toContain('lane-2 - Blaze')
@@ -88,7 +88,7 @@ describe('RaceTrack.vue', () => {
 
   it('shows "No Race Generated" when there is no current round', () => {
     const wrapper = mountWith({ 'race/currentRound': null })
-    expect(wrapper.find('.lap-info').text()).toBe('No Race Generated')
+    expect(wrapper.get('[data-testid="lap-info"]').text()).toBe('No Race Generated')
   })
 
   it('shows "Ready: <id>ST Lap - <distance>" when round exists but race not running', () => {
@@ -96,7 +96,7 @@ describe('RaceTrack.vue', () => {
       'race/currentRound': { id: 2, distance: '1500m', selectedHorses: [] },
       'race/isRaceRunning': false,
     })
-    expect(wrapper.find('.lap-info').text()).toBe('Ready: 2ST Lap - 1500m')
+    expect(wrapper.get('[data-testid="lap-info"]').text()).toBe('Ready: 2ST Lap - 1500m')
   })
 
   it('shows "<id>ST Lap - <distance>" when race is running', () => {
@@ -104,6 +104,6 @@ describe('RaceTrack.vue', () => {
       'race/currentRound': { id: 3, distance: '1800m', selectedHorses: [] },
       'race/isRaceRunning': true,
     })
-    expect(wrapper.find('.lap-info').text()).toBe('3ST Lap - 1800m')
+    expect(wrapper.get('[data-testid="lap-info"]').text()).toBe('3ST Lap - 1800m')
   })
 })

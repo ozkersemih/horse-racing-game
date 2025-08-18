@@ -37,13 +37,13 @@ const trackLanes = computed(() => {
 </script>
 
 <template>
-  <div class="track">
-    <div class="track-header">
-      <div class="track-title">RACE TRACK</div>
+  <div class="track" data-testid="track">
+    <div class="track-header" data-testid="track-header">
+      <div class="track-title" data-testid="track-title">RACE TRACK</div>
       <RaceTimer />
     </div>
 
-    <div class="track-lanes">
+    <div class="track-lanes" data-testid="track-lanes">
       <HorseLane
         v-for="lane in trackLanes"
         :key="lane.id"
@@ -52,9 +52,9 @@ const trackLanes = computed(() => {
       />
     </div>
 
-    <div class="track-footer">
-      <span class="lap-info">{{ lapInfo }}</span>
-      <span class="finish-label">FINISH</span>
+    <div class="track-footer" data-testid="track-footer">
+      <span class="lap-info" data-testid="lap-info">{{ lapInfo }}</span>
+      <span class="finish-label" data-testid="finish-label">FINISH</span>
     </div>
   </div>
 </template>

@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import type { Horse } from '@/stores/modules/horses'
 
-defineOptions({
-  name: 'HorseDisplay',
-})
+defineOptions({ name: 'HorseDisplay' })
 
 interface Props {
   horse: Horse
   progress?: number
 }
 
-withDefaults(defineProps<Props>(), {
-  progress: 0,
-})
+withDefaults(defineProps<Props>(), { progress: 0 })
 </script>
 
 <template>
-  <div class="horse" :style="{ left: `${progress}%`, transform: `translateX(-${progress}%)` }">
-    <span class="horse-icon">🐎</span>
-    <span class="horse-name">{{ horse.name }}</span>
+  <div
+    class="horse"
+    data-testid="horse"
+    :style="{ left: `${progress}%`, transform: `translateX(-${progress}%)` }"
+  >
+    <span class="horse-icon" data-testid="horse-icon">🐎</span>
+    <span class="horse-name" data-testid="horse-name">{{ horse.name }}</span>
   </div>
 </template>
 
