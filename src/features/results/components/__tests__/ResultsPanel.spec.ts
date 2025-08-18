@@ -32,7 +32,7 @@ describe('ResultsPanel', () => {
         tables: mockTables,
       },
     })
-    expect(wrapper.get('[data-testid="results-panel"]').exists()).toBe(true)
+    expect(wrapper.get('[data-testid="results-panel"]')).toBeTruthy()
   })
 
   describe('Props', () => {

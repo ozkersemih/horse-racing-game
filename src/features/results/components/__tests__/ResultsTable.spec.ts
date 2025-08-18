@@ -13,7 +13,7 @@ describe('ResultsTable', () => {
     const wrapper = mount(ResultsTable, {
       props: { title: 'Test Round', items: mockItems },
     })
-    expect(wrapper.get('[data-testid="results-table"]').exists()).toBe(true)
+    expect(wrapper.get('[data-testid="results-table"]')).toBeTruthy()
   })
 
   describe('Props', () => {

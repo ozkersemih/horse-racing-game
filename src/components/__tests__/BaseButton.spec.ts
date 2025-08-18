@@ -6,7 +6,7 @@ describe('BaseButton', () => {
   it('should rendered successfully', () => {
     const wrapper = mount(BaseButton, { slots: { default: 'Test Button' } })
     const btn = wrapper.get('[data-testid="base-button"]')
-    expect(btn.exists()).toBe(true)
+    expect(wrapper.exists()).toBe(true)
     expect(btn.text()).toBe('Test Button')
   })
 

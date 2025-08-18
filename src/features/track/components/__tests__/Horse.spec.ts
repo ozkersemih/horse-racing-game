@@ -14,7 +14,7 @@ describe('HorseDisplay', () => {
   it('should mount successfully', () => {
     const wrapper = mount(HorseDisplay, { props: { horse: mockHorse } })
     const root = wrapper.get('[data-testid="horse"]')
-    expect(root.exists()).toBe(true)
+    expect(root).toBeTruthy()
   })
 
   describe('Props', () => {
