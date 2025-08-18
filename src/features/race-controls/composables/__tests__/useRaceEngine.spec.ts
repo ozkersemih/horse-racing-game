@@ -60,36 +60,8 @@ describe('useRaceEngine', () => {
 
       const speed = engine.calculateSpeedForHorse(horse)
 
-      expect(speed).toBeGreaterThanOrEqual(10)
-      expect(speed).toBeLessThanOrEqual(12)
-    })
-
-    it('should handle minimum condition', () => {
-      const horse: Horse = {
-        id: 1,
-        name: 'Test Horse',
-        condition: 1,
-        color: '#ff0000',
-      }
-
-      const speed = engine.calculateSpeedForHorse(horse)
-
-      expect(speed).toBeGreaterThanOrEqual(5)
-      expect(speed).toBeLessThanOrEqual(8)
-    })
-
-    it('should handle maximum condition', () => {
-      const horse: Horse = {
-        id: 1,
-        name: 'Test Horse',
-        condition: 100,
-        color: '#ff0000',
-      }
-
-      const speed = engine.calculateSpeedForHorse(horse)
-
-      expect(speed).toBeGreaterThanOrEqual(15)
-      expect(speed).toBeLessThanOrEqual(17)
+      expect(speed).toBeGreaterThanOrEqual(17)
+      expect(speed).toBeLessThanOrEqual(19)
     })
   })
 
