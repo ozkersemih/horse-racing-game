@@ -23,13 +23,9 @@ function handleStartPause() {
 }
 
 function getStartPauseButtonText(): string {
-  if (raceStatus.value === 'running') {
-    return 'PAUSE'
-  } else if (raceStatus.value === 'paused') {
-    return 'RESUME'
-  } else {
-    return 'START'
-  }
+  if (raceStatus.value === 'running') return 'PAUSE'
+  if (raceStatus.value === 'paused') return 'RESUME'
+  return 'START'
 }
 
 onUnmounted(() => {
@@ -38,11 +34,22 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="race-controls">
-    <BaseButton variant="primary" :disabled="isGenerated" @click="handleGenerate">
+  <div class="race-controls" data-testid="race-controls">
+    <BaseButton
+      data-testid="btn-generate"
+      variant="primary"
+      :disabled="isGenerated"
+      @click="handleGenerate"
+    >
       {{ isGenerated ? 'PROGRAM GENERATED' : 'GENERATE PROGRAM' }}
     </BaseButton>
-    <BaseButton variant="danger" :disabled="!isGenerated" @click="handleStartPause">
+
+    <BaseButton
+      data-testid="btn-start"
+      variant="danger"
+      :disabled="!isGenerated"
+      @click="handleStartPause"
+    >
       {{ getStartPauseButtonText() }}
     </BaseButton>
   </div>

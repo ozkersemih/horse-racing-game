@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import RaceControls from '@/features/race-controls/RaceControls.vue'
-import BaseButton from '@/components/BaseButton.vue'
 
 const mockStore = {
   getters: {
@@ -51,53 +50,55 @@ describe('RaceControls', () => {
   describe('rendering', () => {
     it('renders both buttons', () => {
       const wrapper = mountWith()
-      const buttons = wrapper.findAllComponents(BaseButton)
-      expect(buttons).toHaveLength(2)
+      const generateBtn = wrapper.get('[data-testid="btn-generate"]')
+      const startBtn = wrapper.get('[data-testid="btn-start"]')
+      expect(generateBtn.exists()).toBe(true)
+      expect(startBtn.exists()).toBe(true)
     })
 
     it('renders generate button initial state (not generated)', () => {
       const wrapper = mountWith({ 'race/isGenerated': false })
-      const generateButton = wrapper.findAllComponents(BaseButton)[0]
-      expect(generateButton.text()).toBe('GENERATE PROGRAM')
-      expect(generateButton.props('disabled')).toBe(false)
+      const generateBtn = wrapper.get('[data-testid="btn-generate"]')
+      expect(generateBtn.text()).toBe('GENERATE PROGRAM')
+      expect(generateBtn.attributes('disabled')).toBeUndefined()
     })
 
-    it('renders start button initial state (not generated -> disabled, shows START)', () => {
+    it('renders start button initial state (disabled, START)', () => {
       const wrapper = mountWith({ 'race/isGenerated': false })
-      const startButton = wrapper.findAllComponents(BaseButton)[1]
-      expect(startButton.text()).toBe('START')
-      expect(startButton.props('disabled')).toBe(true)
+      const startBtn = wrapper.get('[data-testid="btn-start"]')
+      expect(startBtn.text()).toBe('START')
+      expect(startBtn.attributes('disabled')).toBeDefined()
     })
   })
 
   describe('generate button', () => {
     it('dispatches generateRace when clicked', async () => {
       const wrapper = mountWith({ 'race/isGenerated': false })
-      const generateButton = wrapper.findAllComponents(BaseButton)[0]
-      await generateButton.trigger('click')
+      const generateBtn = wrapper.get('[data-testid="btn-generate"]')
+      await generateBtn.trigger('click')
       expect(mockStore.dispatch).toHaveBeenCalledWith('race/generateRace')
     })
 
-    it('becomes disabled and shows different text when race is generated', () => {
+    it('becomes disabled and shows different text when generated', () => {
       const wrapper = mountWith({ 'race/isGenerated': true })
-      const generateButton = wrapper.findAllComponents(BaseButton)[0]
-      expect(generateButton.text()).toBe('PROGRAM GENERATED')
-      expect(generateButton.props('disabled')).toBe(true)
+      const generateBtn = wrapper.get('[data-testid="btn-generate"]')
+      expect(generateBtn.text()).toBe('PROGRAM GENERATED')
+      expect(generateBtn.attributes('disabled')).toBeDefined()
     })
   })
 
   describe('start/pause button', () => {
     it('is enabled when race is generated', () => {
       const wrapper = mountWith({ 'race/isGenerated': true })
-      const startButton = wrapper.findAllComponents(BaseButton)[1]
-      expect(startButton.props('disabled')).toBe(false)
+      const startBtn = wrapper.get('[data-testid="btn-start"]')
+      expect(startBtn.attributes('disabled')).toBeUndefined()
     })
 
     it('calls startRace when clicked while not running', async () => {
       mockIsRaceRunning.value = false
       const wrapper = mountWith({ 'race/isGenerated': true, 'race/raceStatus': 'idle' })
-      const startButton = wrapper.findAllComponents(BaseButton)[1]
-      await startButton.trigger('click')
+      const startBtn = wrapper.get('[data-testid="btn-start"]')
+      await startBtn.trigger('click')
       expect(mockStartRace).toHaveBeenCalled()
       expect(mockPauseRace).not.toHaveBeenCalled()
     })
@@ -105,8 +106,8 @@ describe('RaceControls', () => {
     it('calls pauseRace when clicked while running', async () => {
       mockIsRaceRunning.value = true
       const wrapper = mountWith({ 'race/isGenerated': true, 'race/raceStatus': 'running' })
-      const startButton = wrapper.findAllComponents(BaseButton)[1]
-      await startButton.trigger('click')
+      const startBtn = wrapper.get('[data-testid="btn-start"]')
+      await startBtn.trigger('click')
       expect(mockPauseRace).toHaveBeenCalled()
       expect(mockStartRace).not.toHaveBeenCalled()
     })
@@ -115,20 +116,20 @@ describe('RaceControls', () => {
   describe('button text based on race status', () => {
     it('shows START when status is idle', () => {
       const wrapper = mountWith({ 'race/isGenerated': true, 'race/raceStatus': 'idle' })
-      const startButton = wrapper.findAllComponents(BaseButton)[1]
-      expect(startButton.text()).toBe('START')
+      const startBtn = wrapper.get('[data-testid="btn-start"]')
+      expect(startBtn.text()).toBe('START')
     })
 
     it('shows PAUSE when status is running', () => {
       const wrapper = mountWith({ 'race/isGenerated': true, 'race/raceStatus': 'running' })
-      const startButton = wrapper.findAllComponents(BaseButton)[1]
-      expect(startButton.text()).toBe('PAUSE')
+      const startBtn = wrapper.get('[data-testid="btn-start"]')
+      expect(startBtn.text()).toBe('PAUSE')
     })
 
     it('shows RESUME when status is paused', () => {
       const wrapper = mountWith({ 'race/isGenerated': true, 'race/raceStatus': 'paused' })
-      const startButton = wrapper.findAllComponents(BaseButton)[1]
-      expect(startButton.text()).toBe('RESUME')
+      const startBtn = wrapper.get('[data-testid="btn-start"]')
+      expect(startBtn.text()).toBe('RESUME')
     })
   })
 
