@@ -13,7 +13,7 @@ vi.mock('@/features/results/components/ResultsPanel.vue', () => ({
       tables: { type: Array, required: true },
     },
     template: `
-      <div class="stub-results-panel">
+      <div>
         {{ title }} - {{ String(showEmptyState) }} - {{ emptyStateMessage }} - tables: {{ tables.length }}
       </div>
     `,
@@ -29,9 +29,7 @@ const mockStore = {
   },
 }
 
-vi.mock('vuex', () => ({
-  useStore: () => mockStore,
-}))
+vi.mock('vuex', () => ({ useStore: () => mockStore }))
 
 const mountWith = (overrides?: Partial<typeof mockStore.getters>) => {
   Object.assign(mockStore.getters, {
@@ -58,51 +56,51 @@ describe('Results', () => {
   describe('rendering', () => {
     it('should render two ResultsPanel components', () => {
       const wrapper = mountWith()
-      const panels = wrapper.findAll('.stub-results-panel')
+      const panels = wrapper.findAll('[data-testid^="panel-"]')
       expect(panels).toHaveLength(2)
     })
 
-    it('should render Program panel with correct title', () => {
+    it('renders Program panel with correct title', () => {
       const wrapper = mountWith()
-      const programPanel = wrapper.findAll('.stub-results-panel')[0]
+      const programPanel = wrapper.get('[data-testid="panel-program"]')
       expect(programPanel.text()).toContain('Program')
     })
 
-    it('should render Results panel with correct title', () => {
+    it('renders Results panel with correct title', () => {
       const wrapper = mountWith()
-      const resultsPanel = wrapper.findAll('.stub-results-panel')[1]
+      const resultsPanel = wrapper.get('[data-testid="panel-results"]')
       expect(resultsPanel.text()).toContain('Results')
     })
   })
 
   describe('render behavior based on store data', () => {
-    it('Program panel should show empty state when race is not generated', () => {
+    it('Program panel shows empty state when not generated', () => {
       const wrapper = mountWith({ 'race/isGenerated': false })
-      const programPanel = wrapper.findAll('.stub-results-panel')[0]
+      const programPanel = wrapper.get('[data-testid="panel-program"]')
       expect(programPanel.text()).toContain('true')
       expect(programPanel.text()).toContain('Click "Generate Program"')
     })
 
-    it('Program panel should hide empty state when race is generated', () => {
+    it('Program panel hides empty state when generated', () => {
       const wrapper = mountWith({ 'race/isGenerated': true })
-      const programPanel = wrapper.findAll('.stub-results-panel')[0]
+      const programPanel = wrapper.get('[data-testid="panel-program"]')
       expect(programPanel.text()).toContain('false')
     })
 
-    it('Results panel should show empty state when not generated', () => {
+    it('Results panel shows empty when not generated', () => {
       const wrapper = mountWith({ 'race/isGenerated': false })
-      const resultsPanel = wrapper.findAll('.stub-results-panel')[1]
+      const resultsPanel = wrapper.get('[data-testid="panel-results"]')
       expect(resultsPanel.text()).toContain('true')
       expect(resultsPanel.text()).toContain('Race results will appear')
     })
 
-    it('Results panel should show "Click Start" when idle and no completed rounds', () => {
+    it('Results panel shows "Click Start" when idle and no completed rounds', () => {
       const wrapper = mountWith({
         'race/isGenerated': true,
         'race/raceStatus': 'idle',
         'race/getCompletedRounds': [],
       })
-      const resultsPanel = wrapper.findAll('.stub-results-panel')[1]
+      const resultsPanel = wrapper.get('[data-testid="panel-results"]')
       expect(resultsPanel.text()).toContain('true')
       expect(resultsPanel.text()).toContain('Click "Start"')
     })
@@ -113,7 +111,7 @@ describe('Results', () => {
         'race/raceStatus': 'paused',
         'race/getCompletedRounds': [],
       })
-      const resultsPanel = wrapper.findAll('.stub-results-panel')[1]
+      const resultsPanel = wrapper.get('[data-testid="panel-results"]')
       expect(resultsPanel.text()).toContain('Click "Resume"')
     })
 
@@ -131,7 +129,7 @@ describe('Results', () => {
         'race/raceStatus': 'running',
         'race/getCompletedRounds': completed,
       })
-      const resultsPanel = wrapper.findAll('.stub-results-panel')[1]
+      const resultsPanel = wrapper.get('[data-testid="panel-results"]')
       expect(resultsPanel.text()).toContain('false')
     })
   })
@@ -151,7 +149,7 @@ describe('Results', () => {
           },
         ],
       })
-      const programPanel = wrapper.findAll('.stub-results-panel')[0]
+      const programPanel = wrapper.get('[data-testid="panel-program"]')
       expect(programPanel.text()).toContain('tables: 1')
     })
 
@@ -171,7 +169,7 @@ describe('Results', () => {
           },
         ],
       })
-      const resultsPanel = wrapper.findAll('.stub-results-panel')[1]
+      const resultsPanel = wrapper.get('[data-testid="panel-results"]')
       expect(resultsPanel.text()).toContain('tables: 1')
     })
   })

@@ -11,59 +11,43 @@ const mockItems: TableItem[] = [
 describe('ResultsTable', () => {
   it('should mount successfully', () => {
     const wrapper = mount(ResultsTable, {
-      props: {
-        title: 'Test Round',
-        items: mockItems,
-      },
+      props: { title: 'Test Round', items: mockItems },
     })
-
-    expect(wrapper.exists()).toBe(true)
-    expect(wrapper.classes()).toContain('results-table')
+    expect(wrapper.get('[data-testid="results-table"]').exists()).toBe(true)
   })
 
   describe('Props', () => {
     it('should display title correctly', () => {
       const wrapper = mount(ResultsTable, {
-        props: {
-          title: '1ST Lap - 1200m',
-          items: mockItems,
-        },
+        props: { title: '1ST Lap - 1200m', items: mockItems },
       })
-
-      expect(wrapper.find('.table-title').text()).toBe('1ST Lap - 1200m')
+      expect(wrapper.get('[data-testid="table-title"]').text()).toBe('1ST Lap - 1200m')
     })
 
     it('should render all items correctly', () => {
       const wrapper = mount(ResultsTable, {
-        props: {
-          title: 'Test Round',
-          items: mockItems,
-        },
+        props: { title: 'Test Round', items: mockItems },
       })
 
-      const rows = wrapper.findAll('.table-row')
+      const rows = wrapper.findAll('[data-testid="table-row"]')
       expect(rows).toHaveLength(3)
 
-      expect(rows[0].find('.position').text()).toBe('1')
-      expect(rows[0].find('.name').text()).toBe('Thunder Bolt')
+      expect(rows[0].get('[data-testid="row-position"]').text()).toBe('1')
+      expect(rows[0].get('[data-testid="row-name"]').text()).toBe('Thunder Bolt')
 
-      expect(rows[1].find('.position').text()).toBe('2')
-      expect(rows[1].find('.name').text()).toBe('Silver Star')
+      expect(rows[1].get('[data-testid="row-position"]').text()).toBe('2')
+      expect(rows[1].get('[data-testid="row-name"]').text()).toBe('Silver Star')
 
-      expect(rows[2].find('.position').text()).toBe('3')
-      expect(rows[2].find('.name').text()).toBe('Golden Arrow')
+      expect(rows[2].get('[data-testid="row-position"]').text()).toBe('3')
+      expect(rows[2].get('[data-testid="row-name"]').text()).toBe('Golden Arrow')
     })
 
     it('should handle empty items array', () => {
       const wrapper = mount(ResultsTable, {
-        props: {
-          title: 'Empty Round',
-          items: [],
-        },
+        props: { title: 'Empty Round', items: [] },
       })
-
-      expect(wrapper.find('.table-title').text()).toBe('Empty Round')
-      expect(wrapper.findAll('.table-row')).toHaveLength(0)
+      expect(wrapper.get('[data-testid="table-title"]').text()).toBe('Empty Round')
+      expect(wrapper.findAll('[data-testid="table-row"]')).toHaveLength(0)
     })
   })
 })

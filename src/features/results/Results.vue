@@ -5,9 +5,7 @@ import ResultsPanel from './components/ResultsPanel.vue'
 import type { Round, RoundResult } from '@/stores/modules/race'
 import type { Horse } from '@/stores/modules/horses'
 
-defineOptions({
-  name: 'ResultsView',
-})
+defineOptions({ name: 'ResultsView' })
 
 const store = useStore()
 
@@ -66,14 +64,16 @@ const resultsEmptyMessage = computed(() => {
 </script>
 
 <template>
-  <div class="results">
+  <div class="results" data-testid="results-view">
     <ResultsPanel
+      data-testid="panel-program"
       title="Program"
       :show-empty-state="programEmptyState"
       :empty-state-message="programEmptyMessage"
       :tables="programTables"
     />
     <ResultsPanel
+      data-testid="panel-results"
       title="Results"
       :show-empty-state="resultsEmptyState"
       :empty-state-message="resultsEmptyMessage"

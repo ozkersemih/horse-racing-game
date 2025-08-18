@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import ResultsTable, { type TableItem } from './ResultsTable.vue'
 
-defineOptions({
-  name: 'ResultsPanel',
-})
+defineOptions({ name: 'ResultsPanel' })
 
 interface TableData {
   id: string | number
@@ -20,10 +18,10 @@ defineProps<{
 </script>
 
 <template>
-  <div class="results-panel">
-    <div class="panel-header">{{ title }}</div>
-    <div class="panel-content">
-      <div v-if="showEmptyState" class="empty-state">
+  <div class="results-panel" data-testid="results-panel">
+    <div class="panel-header" data-testid="panel-header">{{ title }}</div>
+    <div class="panel-content" data-testid="panel-content">
+      <div v-if="showEmptyState" class="empty-state" data-testid="empty-state">
         {{ emptyStateMessage }}
       </div>
       <div v-else>
@@ -32,6 +30,7 @@ defineProps<{
           :key="table.id"
           :title="table.title"
           :items="table.items"
+          data-testid="results-table"
         />
       </div>
     </div>
@@ -45,7 +44,6 @@ defineProps<{
   flex-direction: column;
   background-color: var(--color-white);
 }
-
 .panel-header {
   background-color: var(--color-primary);
   color: var(--color-white);
@@ -54,13 +52,11 @@ defineProps<{
   font-weight: bold;
   font-size: 12px;
 }
-
 .panel-content {
   flex: 1;
   overflow-y: auto;
   min-height: 0;
 }
-
 .empty-state {
   padding: 20px;
   text-align: center;

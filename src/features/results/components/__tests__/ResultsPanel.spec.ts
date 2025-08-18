@@ -23,7 +23,7 @@ const mockTables = [
 ]
 
 describe('ResultsPanel', () => {
-  it('should mount successfully', () => {
+  it('mounts successfully', () => {
     const wrapper = mount(ResultsPanel, {
       props: {
         title: 'Results',
@@ -32,13 +32,11 @@ describe('ResultsPanel', () => {
         tables: mockTables,
       },
     })
-
-    expect(wrapper.exists()).toBe(true)
-    expect(wrapper.classes()).toContain('results-panel')
+    expect(wrapper.get('[data-testid="results-panel"]').exists()).toBe(true)
   })
 
   describe('Props', () => {
-    it('should display panel title correctly', () => {
+    it('displays panel title', () => {
       const wrapper = mount(ResultsPanel, {
         props: {
           title: 'Race Results',
@@ -47,11 +45,10 @@ describe('ResultsPanel', () => {
           tables: mockTables,
         },
       })
-
-      expect(wrapper.find('.panel-header').text()).toBe('Race Results')
+      expect(wrapper.get('[data-testid="panel-header"]').text()).toBe('Race Results')
     })
 
-    it('should render multiple tables when they are provided', () => {
+    it('renders multiple tables when provided', () => {
       const wrapper = mount(ResultsPanel, {
         props: {
           title: 'Results',
@@ -60,15 +57,15 @@ describe('ResultsPanel', () => {
           tables: mockTables,
         },
       })
-
-      const resultsTables = wrapper.findAllComponents({ name: 'ResultsTable' })
-      expect(resultsTables).toHaveLength(2)
-
-      expect(resultsTables[0].props('title')).toBe('1ST Lap - 1200m')
-      expect(resultsTables[1].props('title')).toBe('2ND Lap - 1400m')
+      const tables = wrapper.findAll('[data-testid="results-table"]')
+      expect(tables).toHaveLength(2)
+      // child props yine kontrol edilebilir:
+      const cmpTables = wrapper.findAllComponents({ name: 'ResultsTable' })
+      expect(cmpTables[0].props('title')).toBe('1ST Lap - 1200m')
+      expect(cmpTables[1].props('title')).toBe('2ND Lap - 1400m')
     })
 
-    it('should show empty state when showEmptyState is true', () => {
+    it('shows empty state when showEmptyState is true', () => {
       const wrapper = mount(ResultsPanel, {
         props: {
           title: 'Results',
@@ -77,15 +74,12 @@ describe('ResultsPanel', () => {
           tables: mockTables,
         },
       })
-
-      expect(wrapper.find('.empty-state').exists()).toBe(true)
-      expect(wrapper.find('.empty-state').text()).toBe('Click "Start" to begin racing')
-
-      const resultsTables = wrapper.findAllComponents({ name: 'ResultsTable' })
-      expect(resultsTables).toHaveLength(0)
+      const empty = wrapper.get('[data-testid="empty-state"]')
+      expect(empty.text()).toBe('Click "Start" to begin racing')
+      expect(wrapper.findAll('[data-testid="results-table"]').length).toBe(0)
     })
 
-    it('should handle empty tables array', () => {
+    it('handles empty tables array', () => {
       const wrapper = mount(ResultsPanel, {
         props: {
           title: 'Results',
@@ -94,9 +88,7 @@ describe('ResultsPanel', () => {
           tables: [],
         },
       })
-
-      const resultsTables = wrapper.findAllComponents({ name: 'ResultsTable' })
-      expect(resultsTables).toHaveLength(0)
+      expect(wrapper.findAll('[data-testid="results-table"]').length).toBe(0)
     })
   })
 })
