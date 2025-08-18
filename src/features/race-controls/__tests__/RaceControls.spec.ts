@@ -52,8 +52,8 @@ describe('RaceControls', () => {
       const wrapper = mountWith()
       const generateBtn = wrapper.get('[data-testid="btn-generate"]')
       const startBtn = wrapper.get('[data-testid="btn-start"]')
-      expect(generateBtn.exists()).toBe(true)
-      expect(startBtn.exists()).toBe(true)
+      expect(generateBtn).toBeTruthy()
+      expect(startBtn).toBeTruthy()
     })
 
     it('renders generate button initial state (not generated)', () => {

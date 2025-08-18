@@ -58,7 +58,7 @@ describe('RaceTrack.vue', () => {
   it('renders header title and RaceTimer', () => {
     const wrapper = mountWith()
     expect(wrapper.get('[data-testid="track-title"]').text()).toBe('RACE TRACK')
-    expect(wrapper.get('[data-testid="race-timer"]').exists()).toBe(true)
+    expect(wrapper.get('[data-testid="race-timer"]')).toBeTruthy()
   })
 
   it('renders 10 empty lanes when there is no current round', () => {
