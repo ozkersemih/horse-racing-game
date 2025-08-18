@@ -37,7 +37,7 @@ onUnmounted(() => {
   <div class="race-controls" data-testid="race-controls">
     <BaseButton
       data-testid="btn-generate"
-      variant="primary"
+      variant="secondary"
       :disabled="isGenerated"
       @click="handleGenerate"
     >
